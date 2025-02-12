@@ -43,10 +43,7 @@ Make a histogram of the `hwy` variable from `mpg`. Hint: do not supply a y varia
 
 ```{r}
 ggplot(data = mpg) +
-  geom_histogram(mapping = aes(x = hwy),
-                 binwidth = 2,
-                 fill = "dodgerblue2",
-                 color = "grey35")
+  geom_histogram(mapping = aes(x = hwy))
 ```
 
 ## Your Turn 4
@@ -54,7 +51,11 @@ ggplot(data = mpg) +
 Use the help page for `geom_histogram` to make the bins 2 units wide.
 
 ```{r}
-
+ggplot(data = mpg) +
+  geom_histogram(mapping = aes(x = hwy),
+                 binwidth = 2,
+                 fill = "dodgerblue2",
+                 color = "grey35")
 ```
 
 ## Your Turn 5
@@ -63,7 +64,13 @@ Add `color`, `size`, `alpha`, and `shape` aesthetics to your graph. Experiment.
 
 ```{r}
 ggplot(data = mpg) +
-  geom_point(mapping = aes(x = displ, y = hwy))
+  geom_point(mapping = aes(x = displ, y = hwy, 
+                           color = class)) +
+  labs(x = "Engine Size Displacement",
+       y = "Highway Mileage (mpg)",
+       color = "Class of Vehicle",
+       title = "The bigger the engine the less mileage we get on the highway") +
+  theme_light()
 ```
 
 ## Help Me
@@ -75,9 +82,13 @@ What do `facet_grid()` and `facet_wrap()` do? (run the code, interpret, convince
 q <- ggplot(mpg) + geom_point(aes(x = displ, y = hwy))
 
 q + facet_grid(. ~ cyl)
+# Makes one row, four columns by cyl
 q + facet_grid(drv ~ .)
+# Makes three rows, one columnc but drv
 q + facet_grid(drv ~ cyl)
+# Makes three rows by drv, four columns by cyl
 q + facet_wrap(~ class)
+# Makes a graph for each value in class
 ```
 
 ## Your Turn 6
@@ -86,6 +97,14 @@ Make a bar chart `class` colored by `class`. Use the help page for `geom_bar` to
 
 ```{r}
 
+ggplot (data = mpg) +
+  geom_bar(aes(x = class,
+               fill = drv),
+           position = "dodge") +
+  labs(x = "Class of Vehicle",
+       y = "Number of Vehicles",
+       fill = "Type of Drive") +
+  theme_classic()
 ```
 
 ## Quiz
@@ -93,10 +112,13 @@ Make a bar chart `class` colored by `class`. Use the help page for `geom_bar` to
 What will this code do?
 
 ```{r}
-ggplot(mpg) + 
-  geom_point(aes(displ, hwy)) +
-  geom_smooth(aes(displ, hwy)) 
-  ggsave("example.jpg")
+#| label: plot with hwy class
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point(aes(color = class)) +
+  geom_smooth(color = "black", se = FALSE, method = "lm") 
+
+
+##  ggsave("example.jpg", width = 6, height = 4)
 ```
 
 ------------------------------------------------------------------------
